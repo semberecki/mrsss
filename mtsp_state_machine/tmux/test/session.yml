@@ -1,0 +1,70 @@
+name: simulation
+root: ./
+
+startup_window: state_machine
+pre_window: export UAV_NAME=uav1
+windows:
+  - roscore:
+      layout: even-vertical
+      panes:
+        - roscore
+  - gazebo:
+      layout: even-vertical
+      panes:
+        - waitForRos; roslaunch simulation simulation.launch
+  - status:
+      layout: even-vertical
+      panes:
+        - export UAV_NAME=uav1; waitForRos; roslaunch mrs_status status.launch
+        - export UAV_NAME=uav2; waitForRos; roslaunch mrs_status status.launch
+  - spawn:
+      layout: even-vertical
+      panes:
+        - waitForSimulation; spawn --file pos1.txt --run --delete --enable-rangefinder --enable-ground-truth
+        - waitForSimulation; spawn --file pos2.txt --run --delete --enable-rangefinder --enable-ground-truth
+  - control:
+      layout: even-vertical
+      panes:
+        - export UAV_NAME=uav1; waitForOdometry; roslaunch mtsp_state_machine uav_manager_simulation.launch
+        - export UAV_NAME=uav2; waitForOdometry; roslaunch mtsp_state_machine uav_manager_simulation.launch
+  - state_machine:
+      layout: even-vertical
+      panes:
+        - export UAV_NAME=uav1; waitForOdometry; roslaunch mtsp_state_machine simulation.launch
+  - problem_loader:
+      layout: even-vertical
+      panes:
+        - export UAV_NAME=uav1; waitForOdometry; roslaunch mtsp_problem_loader problem_loader.launch
+  - planner:
+      layout: even-vertical
+      panes:
+        - export UAV_NAME=uav1; waitForOdometry; roslaunch mtsp_planner planner.launch
+  - prepare_uav:
+      layout: even-vertical
+      panes:
+        - 'export UAV_NAME=uav1;
+          waitForControl;
+          rosservice call /$UAV_NAME/mavros/cmd/arming 1;
+          rosservice call /$UAV_NAME/control_manager/motors 1;
+          rosservice call /$UAV_NAME/mavros/set_mode 0 offboard'
+        - 'export UAV_NAME=uav2;
+          waitForControl;
+          rosservice call /$UAV_NAME/mavros/cmd/arming 1;
+          rosservice call /$UAV_NAME/control_manager/motors 1;
+          rosservice call /$UAV_NAME/mavros/set_mode 0 offboard'
+  - start:
+      layout: even-vertical
+      panes:
+        - export UAV_NAME=uav1; waitForControl; sleep 2; rosservice call /uav1/mtsp_state_machine/start
+  - rviz:
+      layout: even-vertical
+      panes:
+        - export UAV_NAME=uav1; waitForOdometry; roslaunch mtsp_state_machine rviz.launch
+        - export UAV_NAME=uav1; read; waitForOdometry; rosrun rqt_reconfigure rqt_reconfigure
+        - export UAV_NAME=uav1; waitForRos; roslaunch mrs_rviz_plugins load_f550_robot.launch
+        - export UAV_NAME=uav2; waitForRos; roslaunch mrs_rviz_plugins load_f550_robot.launch
+  - gazebo_camera_follow:
+      layout: even-vertical
+      panes:
+        - waitForOdometry; gz camera -c gzclient_camera -f uav1; history -s gz camera -c gzclient_camera -f uav1
+        - waitForControl; ~/.i3/layout_manager.sh summerschool
