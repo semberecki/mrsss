@@ -72,8 +72,8 @@ The tasks are designed such that their complexity increases, and each task can i
 
 If you are fast enough, you can optionally implement further features/solvers to even more improve the solution quality:
 
-5. **Implement MTSP construction heuristic** - try to implement Initialization procedure (5.1) from [3] preferably with a time of flight metric used in 4.
-6. **Implement operators that improve solution quality** - you can implement, e.g., two-opt operator that can improve single trajectory, or other similar operators that, e.g., switches target locations between the clusters for individual drones
+5. **Implement operators that improve solution quality** - you can implement, e.g., Local Iterative Optimization (LIO) [3] for hill climbing improvement of heading and neighborhood position samples. You can also try to implement e.g. two-opt operator that improve single trajectory, or other similar operators that switches target locations between the clusters for individual drones
+6. **Implement MTSP construction heuristic** - try to implement Initialization procedure (5.1) from [4] preferably with a time of flight metric used in 4.
 7. **Implement operators that fix mutual collisions** - as the possible collisions are penalized and are avoided by changing altitude and velocity, the trajectories can be improved in case of collision by, e.g., changing assignment of the targets between drones
 8. **Try different motion primitives** - you can try to implement different motion primitives, e.g., splines, and appropriate velocity profile, e.g., using QP optimization, to further improve the solution quality
 
@@ -85,6 +85,8 @@ You selected a group of practicals based on your scientific interest, feel free 
 [1] Helsgaun, K. An effective implementation of the Lin–Kernighan traveling salesman heuristic, European Journal of Operational Research, Volume 126, Issue 1, 2000,
 Pages 106-130, ([http://akira.ruc.dk/~keld/research/LKH/](http://akira.ruc.dk/~keld/research/LKH/))
 
-[2] Noon, C. E., & Bean, J. C. (1993). An efficient transformation of the generalized traveling salesman problem. INFOR: Information Systems and Operational Research, 31(1), 39-44.
+[2] Noon, C. E., & Bean, J. C. (1993). An efficient transformation of the generalized traveling salesman problem. INFOR: Information Systems and Operational Research, 31(1), 39-44.  
 
-[3] Faigl, J, Váňa, P, Pěnička, R, Saska, M. Unsupervised learning‐based flexible framework for surveillance planning with aerial vehicles. J Field Robotics. 2019; 36: 270– 301. [https://doi.org/10.1002/rob.21823](https://doi.org/10.1002/rob.21823)
+[3] P. Váňa and J. Faigl, On the Dubins Traveling Salesman Problem with Neighborhoods, 2015 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Hamburg, 2015, pp. 4029-4034.
+
+[4] Faigl, J, Váňa, P, Pěnička, R, Saska, M. Unsupervised learning‐based flexible framework for surveillance planning with aerial vehicles. J Field Robotics. 2019; 36: 270– 301. [https://doi.org/10.1002/rob.21823](https://doi.org/10.1002/rob.21823)
