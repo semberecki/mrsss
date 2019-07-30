@@ -233,6 +233,10 @@ void MtspStateMachine::onInit() {
 
   ros::NodeHandle nh_ = nodelet::Nodelet::getMTPrivateNodeHandle();
 
+  for (int i = 0; i < TARGET_NUM; i++) {
+    point_distances[i] = false;      
+  }
+
   ros::Time::waitForValid();
 
   mrs_lib::ParamLoader param_loader(nh_, "MtspStateMachine");

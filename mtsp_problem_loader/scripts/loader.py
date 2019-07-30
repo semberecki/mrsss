@@ -60,13 +60,6 @@ class TspLoader:
 
             tsp_problem_msg.points.append(tsp_point_msg)
 
-        # TODO fill in the start idx for each robot
-        for i in range(problem.number_of_robots):
-
-            robot_start_idx = 0 # TODO
-
-            tsp_problem_msg.start_idxs.append(robot_start_idx)
-
         # publish the ros message
 
         self.publisher_problem.publish(tsp_problem_msg)

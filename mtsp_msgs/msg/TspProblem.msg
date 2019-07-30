@@ -7,5 +7,4 @@ mtsp_msgs/TspPoint[] start_points
 float64 neighborhood_radius
 string edge_weight_type
 mtsp_msgs/TspPoint[] points
-int32[] start_idxs
 float64 height

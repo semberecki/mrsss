@@ -55,7 +55,7 @@ windows:
   - start:
       layout: even-vertical
       panes:
-        - export UAV_NAME=uav1; waitForControl; sleep 2; rosservice call /uav1/mtsp_state_machine/start
+        - export UAV_NAME=uav1; waitForControl; sleep 4; rosservice call /uav1/mtsp_state_machine/start
   - rviz:
       layout: even-vertical
       panes:
