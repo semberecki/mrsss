@@ -470,6 +470,17 @@ void MtspStateMachine::callbackProblem(const mtsp_msgs::TspProblemConstPtr& msg)
 
   problem = *msg;
 
+  mtsp_msgs::TspPoint start_point1;
+  start_point1.x = problem.start_points[0].x;
+  start_point1.y = problem.start_points[0].y;
+
+  mtsp_msgs::TspPoint start_point2;
+  start_point2.x = problem.start_points[1].x;
+  start_point2.y = problem.start_points[1].y;
+
+  problem.points.push_back(start_point1);
+  problem.points.push_back(start_point2);
+
   got_problem = true;
 }
 
