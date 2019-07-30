@@ -158,8 +158,8 @@ class MTSPProblem():
         figsize = (10, 7)
         fig = plt.figure(figsize=figsize)
         ax = fig.gca()
-        ax.set_ylabel('x [m]')
-        ax.set_xlabel('y [m]')
+        ax.set_ylabel('y [m]')
+        ax.set_xlabel('x [m]')
         plt.axis('equal')
         plt.plot([item[1] for item in mtsp_problem.targets], [item[2] for item in mtsp_problem.targets], 'k.')
         for item in mtsp_problem.targets:
