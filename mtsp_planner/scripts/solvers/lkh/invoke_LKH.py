@@ -54,10 +54,10 @@ def writeTSPLIBfile_FE(fname_tsp,CostMatrix,user_comment):
     for i in range(0,dims_tsp):
         cost_matrix_strline = ''
         for j in range(0,dims_tsp-1):
-            cost_matrix_strline = cost_matrix_strline + str(int(CostMatrix[i][j])) + ' '
+            cost_matrix_strline = cost_matrix_strline + str(int(CostMatrix[i][j]*10)) + ' '
 
         j = dims_tsp-1
-        cost_matrix_strline = cost_matrix_strline + str(int(CostMatrix[i][j]))
+        cost_matrix_strline = cost_matrix_strline + str(int(CostMatrix[i][j]*10))
         cost_matrix_strline = cost_matrix_strline + '\n'
         Cost_Matrix_STRline.append(cost_matrix_strline)
     
