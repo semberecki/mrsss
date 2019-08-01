@@ -183,13 +183,13 @@ class TspPlanner:
         for i in range(tsp_problem.number_of_robots):
 
             ############### TSP SOLVERS PART BEGIN ###############
-            #path = tsp_solver.plan_tour_etsp(clusters[i],0) #find decoupled ETSP tour over clusters
+            path1 = tsp_solver.plan_tour_etsp(clusters[i],0) #find decoupled ETSP tour over clusters
             #path = tsp_solver.plan_tour_etspn_decoupled(clusters[i], 0, tsp_problem.neighborhood_radius * 0.65)  # find decoupled ETSPN tour over clusters
             
             turning_radius = (self._turning_velocity * self._turning_velocity) / self._max_acceleration
-            path = tsp_solver.plan_tour_dtspn_decoupled(clusters[i], 0, tsp_problem.neighborhood_radius * 0.65, turning_radius)  # find decoupled DTSPN tour over clusters
-            #path = tsp_solver.plan_tour_dtspn_noon_bean(clusters[i], 0, tsp_problem.neighborhood_radius *0.65, turning_radius) # find noon-bean DTSPN tour over clusters
-            
+            path = tsp_solver.plan_tour_dtspn_decoupled(clusters[i], 0, tsp_problem.neighborhood_radius * 0.62, turning_radius)  # find decoupled DTSPN tour over clusters
+            #path = tsp_solver.plan_tour_dtspn_noon_bean(clusters[i], 0, tsp_problem.neighborhood_radius *0.8, turning_radius) # find noon-bean DTSPN tour over clusters
+            #path[0][2]=0
             ############### TSP SOLVERS PART END ###############
             
             print("path", path)

@@ -4,5 +4,5 @@ max_velocity: 7.0 # [m/s] 4
 # UAV is limited to 2.5 m/s
 max_acceleration: 2.5 # [m/s^2] 1.5
 
-turning_velocity: 1.0 # [m/s] 1.0
+turning_velocity: 3.0 # [m/s] 1.0
 plot: false
