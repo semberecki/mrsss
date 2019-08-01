@@ -279,18 +279,6 @@ class TSPSolver():
             # print("start",start)
             # print("end",end)
 
-            if a<n-1:
-                new_a = a+1
-                new_b = (new_a + 1) % n
-                next_start =  samples[sequence[new_a]][selected_samples[new_a]]
-                next_end =  samples[sequence[new_b]][selected_samples[new_b]]
-            if a>0:
-                pre_a = a-1
-                pre_b = (pre_a + 1) % n
-                previous_start =  samples[sequence[pre_a]][selected_samples[pre_a]]
-                previous_end =  samples[sequence[pre_b]][selected_samples[pre_b]]
-            if a==0:
-                first_start = tuple(start)
             step_size = 0.1
             if turning_radius == 0:
                 if a == 0:
@@ -298,6 +286,8 @@ class TSPSolver():
                 path.append(end[0:2])
             else:
                 if a == 0:
+                    new_a = a + 1
+                    next_start = samples[sequence[new_a]][selected_samples[new_a]]
                     angle = self.calc_angle(start[:2], next_start[:2])
                     temp = (start[0], start[1], angle)
                     path.append(temp)
@@ -459,8 +449,22 @@ class TSPSolver():
                 path.append(end[0:2])
             else:
                 if a == 0:
-                    path.append(start)
-                path.append(end)
+                    new_a = a + 1
+                    next_start = samples[sequence[new_a]]
+                    angle = self.calc_angle(start[:2], next_start[:2])
+                    temp = (start[0], start[1], angle)
+                    path.append(temp)
+                if a == n-1:
+                    anglez = self.calc_angle(start[:2], end[:2])
+                    temp = (end[0], end[1], anglez)
+                    print('kate',  anglez)
+                    path.append(temp)
+                    #path.append(end)
+                else:
+                    path.append(end)
+                # if a == 0:
+                #     path.append(start)
+                # path.append(end)
         
         print("plan_tour_dtspn_noon_bean path", path)
         return path

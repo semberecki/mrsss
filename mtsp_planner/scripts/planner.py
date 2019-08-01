@@ -132,19 +132,24 @@ class TspPlanner:
 
         rospy.loginfo('trajectories were published')
 
-    # def get_cluster_direction(self, full_cluster):
-    #     start = full_cluster[0][1:]
-    #     first=full_cluster[1][1:]
-    #     last=full_cluster[-1][1:]
-    #
-    #     dist1 = (first[0]-start[0])**2+(first[1]-start[1])**2
-    #     dist2 = (last[0]-start[0])**2+(last[1]-start[1])**2
-    #     if dist1>dist2:
-    #
-    #         return  full_cluster[0:] + list(reversed(full_cluster[1:]))
-    #
-    #     else:
-    #         return full_cluster
+    def get_cluster_direction(self, full_cluster):
+        start = full_cluster[0][1:]
+        first=full_cluster[1][1:]
+        last=full_cluster[-1][1:]
+
+        a= first[0]-start[0]
+        b=first[1]-start[1]
+        c=last[0]-start[0]
+        d=last[1]-start[1]
+        dist1 = a**2+b**2
+        dist2 = c**2+ d**2
+        if dist1>dist2:
+            #a=  full_cluster[0:0] + list(reversed(full_cluster[1:]))
+            a=  [full_cluster[0]]
+            a.extend(list(reversed(full_cluster[1:])))
+            return a
+        else:
+            return full_cluster
 
     def plan_trajectory(self, tsp_problem): 
         """method for planning the M(D)TSP(N) plans based on tsp_problem"""
@@ -183,8 +188,8 @@ class TspPlanner:
             clusters[1] += kmeans_clusters[1]
 
         # for i in range(tsp_problem.number_of_robots):
-        #     #clusters[i] = self.get_cluster_direction(clusters[i])
-        #     clusters[i][0:] + list(reversed(clusters[i][1:]))
+        #     clusters[i] = self.get_cluster_direction(clusters[i])
+            #clusters[i][0:] + list(reversed(clusters[i][1:]))
         # clusters[0] =clusters[0][0:] + list(reversed(clusters[0][1:]))
         # clusters[1] =clusters[1][0:] + list(reversed(clusters[1][1:]))
 
@@ -209,9 +214,9 @@ class TspPlanner:
             #path = tsp_solver.plan_tour_etspn_decoupled(clusters[i], 0, tsp_problem.neighborhood_radius * 0.65)  # find decoupled ETSPN tour over clusters
             
             turning_radius = (self._turning_velocity * self._turning_velocity) / self._max_acceleration
-            #path = tsp_solver.plan_tour_dtspn_decoupled(clusters[i], 0, tsp_problem.neighborhood_radius * 0.62, turning_radius)  # find decoupled DTSPN tour over clusters
-            path = tsp_solver.plan_tour_dtspn_noon_bean(clusters[i], 0, tsp_problem.neighborhood_radius *0.8, turning_radius) # find noon-bean DTSPN tour over clusters
-            #path[0][2]=0
+            path = tsp_solver.plan_tour_dtspn_decoupled(clusters[i], 0, tsp_problem.neighborhood_radius * 0.62, turning_radius)  # find decoupled DTSPN tour over clusters
+            #path = tsp_solver.plan_tour_dtspn_noon_bean(clusters[i], 0, tsp_problem.neighborhood_radius *0.5, turning_radius) # find noon-bean DTSPN tour over clusters
+
             ############### TSP SOLVERS PART END ###############
             
             print("path", path)
@@ -261,8 +266,7 @@ class TspPlanner:
         # # | --------------- plot velocity profiles --------------- |
         if self._plot:  # plot velocity profile
             for i in range(len(trajectories_samples)):
-                pass
-                #trajectory.plot_velocity_profile(trajectories_samples[i], color=colors[i],title = 'Velocity profile %d' % (i + 1))
+                trajectory.plot_velocity_profile(trajectories_samples[i], color=colors[i],title = 'Velocity profile %d' % (i + 1))
         
         # # | ----------------------- show plots ---------------------- |
         if self._plot:
