@@ -278,6 +278,18 @@ class TSPSolver():
             end = samples[sequence[b]][selected_samples[b]]
             # print("start",start)
             # print("end",end)
+
+            if a<n-1:
+                new_a = a+1
+                new_b = (new_a + 1) % n
+                next_start =  samples[sequence[new_a]][selected_samples[new_a]]
+                next_end =  samples[sequence[new_b]][selected_samples[new_b]]
+            if a>0:
+                pre_a = a-1
+                pre_b = (pre_a + 1) % n
+                previous_start =  samples[sequence[pre_a]][selected_samples[pre_a]]
+                previous_end =  samples[sequence[pre_b]][selected_samples[pre_b]]
+
             step_size = 0.1
             if turning_radius == 0:
                 if a == 0:
@@ -285,16 +297,25 @@ class TSPSolver():
                 path.append(end[0:2])
             else:
                 if a == 0:
-                    path.append(start)
+                    angle = self.calc_angle(start[:2], next_start[:2])
+                    temp = (start[0], start[1], angle)
+
+                    path.append(temp)
                 path.append(end)
 
         print("plan_tour_dtspn_decoupled path", path)
         return path
 
     # #} end of plan_tour_dtspn_decoupled()
-    
+
     # #{ plan_tour_dtspn_noon_bean()
-    
+
+    def calc_angle(self, first, second):
+        x1 = first[0]
+        y1 = first[1]
+        x2 = second[0]
+        y2 = second[1]
+        return math.atan((y2 - y1)/(x2 - x1))
     def plan_tour_dtspn_noon_bean(self, goals, start_idx, sensing_radius, turning_radius):
         n = len(goals)     
        
