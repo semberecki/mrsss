@@ -183,7 +183,7 @@ class TspPlanner:
         for i in range(tsp_problem.number_of_robots):
 
             ############### TSP SOLVERS PART BEGIN ###############
-            path1 = tsp_solver.plan_tour_etsp(clusters[i],0) #find decoupled ETSP tour over clusters
+            #path = tsp_solver.plan_tour_etsp(clusters[i],0) #find decoupled ETSP tour over clusters
             #path = tsp_solver.plan_tour_etspn_decoupled(clusters[i], 0, tsp_problem.neighborhood_radius * 0.65)  # find decoupled ETSPN tour over clusters
             
             turning_radius = (self._turning_velocity * self._turning_velocity) / self._max_acceleration

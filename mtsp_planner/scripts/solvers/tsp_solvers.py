@@ -289,7 +289,8 @@ class TSPSolver():
                 pre_b = (pre_a + 1) % n
                 previous_start =  samples[sequence[pre_a]][selected_samples[pre_a]]
                 previous_end =  samples[sequence[pre_b]][selected_samples[pre_b]]
-
+            if a==0:
+                first_start = tuple(start)
             step_size = 0.1
             if turning_radius == 0:
                 if a == 0:
@@ -299,9 +300,14 @@ class TSPSolver():
                 if a == 0:
                     angle = self.calc_angle(start[:2], next_start[:2])
                     temp = (start[0], start[1], angle)
-
                     path.append(temp)
-                path.append(end)
+                if a == n-1:
+                    anglez = self.calc_angle(start[:2], end[:2])
+                    temp = (end[0], end[1], anglez)
+                    print('kate',  anglez)
+                    path.append(temp)
+                else:
+                    path.append(end)
 
         print("plan_tour_dtspn_decoupled path", path)
         return path
@@ -315,7 +321,8 @@ class TSPSolver():
         y1 = first[1]
         x2 = second[0]
         y2 = second[1]
-        return math.atan((y2 - y1)/(x2 - x1))
+        #return math.atan((y2 - y1)/(x2 - x1))
+        return math.atan2(y2 - y1, x2 - x1)
     def plan_tour_dtspn_noon_bean(self, goals, start_idx, sensing_radius, turning_radius):
         n = len(goals)     
        
