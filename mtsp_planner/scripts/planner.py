@@ -10,7 +10,7 @@ import copy
 import numpy as np
 import dubins
 this_script_path = os.path.dirname(__file__)
-
+this_script_path = os.path.dirname(__file__)
 # MRS ROS messages
 from mtsp_msgs.msg import TspProblem
 from mrs_msgs.msg import TrackerTrajectory
@@ -146,11 +146,26 @@ class TspPlanner:
         
         ############### TARGET LOCATIONS CLUSTERING BEGIN ###############
         clusters = [[tsp_problem.start_positions[i]] for i in range(tsp_problem.number_of_robots)]  # initiate cluster with starts
-        print("clusters with start", clusters)
-        for i in range(tsp_problem.number_of_robots):
-            start_id = i * len(tsp_problem.targets) / tsp_problem.number_of_robots
-            stop_id = (i + 1) * len(tsp_problem.targets) / tsp_problem.number_of_robots            
-            clusters[i] += tsp_problem.targets[start_id:stop_id]      
+        # for i in range(tsp_problem.number_of_robots):
+        #     start_id = i * len(tsp_problem.targets) / tsp_problem.number_of_robots
+        #     stop_id = (i + 1) * len(tsp_problem.targets) / tsp_problem.number_of_robots
+        #     old[i] += tsp_problem.targets[start_id:stop_id]
+
+        kmeans_clusters, centroid= tsp_solver.cluster_kmeans(tsp_problem.targets, tsp_problem.number_of_robots)
+
+        tsp_solver.cluster_kmeans(tsp_problem.targets, tsp_problem.number_of_robots)
+        print("kmeans_clusters", kmeans_clusters)
+
+        cluster1_distance1 = (clusters[0][0][1] -float(list(centroid[0])[0]))**2 + (clusters[0][0][2] -float(list(centroid[0])[1]))**2
+        cluster1_distance2 = (clusters[0][0][1] -float(list(centroid[1])[0]))**2 + (clusters[0][0][2] -float(list(centroid[1])[1]))**2
+        print("cluster1_distance1", cluster1_distance1, cluster1_distance2)
+
+        if cluster1_distance1 > cluster1_distance2:
+            clusters[0] += kmeans_clusters[1]
+            clusters[1] += kmeans_clusters[0]
+        else:
+            clusters[0] += kmeans_clusters[0]
+            clusters[1] += kmeans_clusters[1]
 
         ############### TARGET LOCATIONS CLUSTERING END ###############
         
@@ -169,11 +184,11 @@ class TspPlanner:
 
             ############### TSP SOLVERS PART BEGIN ###############
             #path = tsp_solver.plan_tour_etsp(clusters[i],0) #find decoupled ETSP tour over clusters
-            #path = tsp_solver.plan_tour_etspn_decoupled(clusters[i], 0, tsp_problem.neighborhood_radius * 0.8)  # find decoupled ETSPN tour over clusters
+            #path = tsp_solver.plan_tour_etspn_decoupled(clusters[i], 0, tsp_problem.neighborhood_radius * 0.65)  # find decoupled ETSPN tour over clusters
             
             turning_radius = (self._turning_velocity * self._turning_velocity) / self._max_acceleration
-            path = tsp_solver.plan_tour_dtspn_decoupled(clusters[i], 0, tsp_problem.neighborhood_radius * 0.8, turning_radius)  # find decoupled DTSPN tour over clusters
-            #path = tsp_solver.plan_tour_dtspn_noon_bean(clusters[i], 0, tsp_problem.neighborhood_radius * 0.8, turning_radius) # find noon-bean DTSPN tour over clusters
+            path = tsp_solver.plan_tour_dtspn_decoupled(clusters[i], 0, tsp_problem.neighborhood_radius * 0.65, turning_radius)  # find decoupled DTSPN tour over clusters
+            #path = tsp_solver.plan_tour_dtspn_noon_bean(clusters[i], 0, tsp_problem.neighborhood_radius *0.65, turning_radius) # find noon-bean DTSPN tour over clusters
             
             ############### TSP SOLVERS PART END ###############
             
