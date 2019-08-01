@@ -321,8 +321,8 @@ class TSPSolver():
         y1 = first[1]
         x2 = second[0]
         y2 = second[1]
-        #return math.atan((y2 - y1)/(x2 - x1))
         return math.atan2(y2 - y1, x2 - x1)
+
     def plan_tour_dtspn_noon_bean(self, goals, start_idx, sensing_radius, turning_radius):
         n = len(goals)     
        
