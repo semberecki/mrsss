@@ -217,9 +217,24 @@ class TspPlanner:
             path = tsp_solver.plan_tour_dtspn_decoupled(clusters[i], 0, tsp_problem.neighborhood_radius * 0.62, turning_radius)  # find decoupled DTSPN tour over clusters
             #path = tsp_solver.plan_tour_dtspn_noon_bean(clusters[i], 0, tsp_problem.neighborhood_radius *0.5, turning_radius) # find noon-bean DTSPN tour over clusters
 
+
+            #path = path[:-1]
             ############### TSP SOLVERS PART END ###############
-            
-            print("path", path)
+
+            a = path[1][0] - path[0][0]
+            b = path[1][1] - path[0][1]
+            c = path[-1][1] - path[0][1]
+            d = path[-1][1] - path[0][1]
+            dist1 = a ** 2 + b ** 2
+            dist2 = c ** 2 + d ** 2
+
+            if dist1 > dist2:
+                new_path = []
+                for p in path:
+                    new_path.append((p[0], p[1],  p[2] - math.pi))
+                path = new_path[::-1]
+            path = path[:-1]
+
             robot_sequences.append(path)
             
             # # | -------------------- plot the solution ------------------- |
