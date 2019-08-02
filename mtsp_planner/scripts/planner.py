@@ -151,6 +151,13 @@ class TspPlanner:
         else:
             return full_cluster
 
+    def calc_angle(self, first, second):
+        x1 = first[0]
+        y1 = first[1]
+        x2 = second[0]
+        y2 = second[1]
+        return math.atan2(y2 - y1, x2 - x1)
+
     def plan_trajectory(self, tsp_problem): 
         """method for planning the M(D)TSP(N) plans based on tsp_problem"""
         
@@ -228,12 +235,17 @@ class TspPlanner:
             dist1 = a ** 2 + b ** 2
             dist2 = c ** 2 + d ** 2
 
+
+
             if dist1 > dist2:
                 new_path = []
                 for p in path:
-                    new_path.append((p[0], p[1],  p[2] - math.pi))
+                    new_path.append((p[0], p[1],  p[2] + math.pi))
                 path = new_path[::-1]
-            path = path[:-1]
+                path = path[:-1]
+                path[-1] = (path[-1][0], path[-1][1],   self.calc_angle( path[-2][:2],  path[-1][:2]))
+            else:
+                path = path[:-1]
 
             robot_sequences.append(path)
             
